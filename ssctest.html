@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play DRM-Protected MPD with Dash.js</title>
+    <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+</head>
+<body>
+    <h1>DRM-Protected MPD Player</h1>
+    <video id="videoPlayer" controls width="640" autoplay></video>
+    <script>
+        // Initialize the player
+        const url = "https://ssc-1-enc.edgenextcdn.net/out/v1/c696e4819b55414388a1a487e8a45ca1/index.mpd";
+        const keyId = "d84c325f36814f39bbe59080272b10c3";
+        const key = "550727de4c96ef1ecff874905493580f";
+
+        const player = dashjs.MediaPlayer().create();
+        const videoElement = document.getElementById('videoPlayer');
+
+        // ClearKey DRM configuration
+        const protectionData = {
+            "org.w3.clearkey": {
+                "clearkeys": {
+                    d84c325f36814f39bbe59080272b10c3:550727de4c96ef1ecff874905493580f
+                }
+            }
+        };
+
+        player.initialize(videoElement, url, true);
+        player.setProtectionData(protectionData);
+
+        // Handle playback errors
+        player.on(dashjs.MediaPlayer.events.ERROR, function (e) {
+            console.error('Error:', e);
+        });
+    </script>
+</body>
+</html>
